@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escolinha - Aliança Kids</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="shortcut icon" href="IMG_SISTEM/logo.png" type="image/x-icon">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            aliancaPurple: '#5E179B',
+            aliancaPink: '#E51291',
+            aliancaOrange: '#FF8A00',
+            aliancaGreen: '#00D215',
+            aliancaBlue: '#49C0EE',
+            aliancaWhite: '#FAFAF5'
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+        body { font-family: 'DM Sans', sans-serif; background-color: #FAFAF5; }
+        .screen { display: none; }
+        .screen.active { display: block; }
+        .nav-item.active { color: #5E179B; font-weight: 600; }
+        .nav-item { color: #94A3B8; transition: all 0.2s ease; }
+    </style>
+ </head>
+ <body class="w-full min-h-screen text-slate-800 antialiased">
+    <!-- TELA DE CADASTRO (BOX) -->
+ <!-- TELA DE CADASTRO (BOX) -->
+<div id="box" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-sm flex items-end sm:items-center justify-center transition-opacity duration-300">
+    
+    <!-- Container do Formulário (Bottom Sheet no Mobile, Modal no Desktop) -->
+    <div class="bg-slate-50 w-full sm:max-w-lg rounded-t-[2rem] sm:rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100/80 max-h-[92vh] sm:max-h-[85vh] flex flex-col transition-all transform duration-300 translate-y-0">
+        
+        <!-- HEADER DO FORMULÁRIO -->
+        <header class="p-5 flex items-center justify-between bg-white sticky top-0 z-10 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-aliancaPurple/10 flex items-center justify-center shrink-0">
+                    <i data-lucide="user-plus" style="width:18px;height:18px;color:#5E179B"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base sm:text-lg text-slate-800 leading-tight">Novo Integrante</h1>
+                    <h2 class="text-[10px] sm:text-xs text-slate-400 font-semibold tracking-wide uppercase mt-0.5">Adicionar à Família</h2>
+                </div>
+            </div>
+            
+            <!-- Botão de Fechar Otimizado para Touch -->
+            <button onclick="document.getElementById('box').classList.add('hidden')" class="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-400 hover:text-slate-600 active:bg-slate-100 transition-all">
+                <i data-lucide="x" style="width:18px;height:18px"></i>
+            </button>
+        </header>
+
+        <!-- CORPO DO FORMULÁRIO (Rolagem interna macia no iOS/Android) -->
+        <main class="flex-1 overflow-y-auto p-5 space-y-5 overscroll-contain">
+            <form id="form-cadastro-familia" class="space-y-5" onsubmit="event.preventDefault();">
+                
+                <!-- SELEÇÃO DE FOTO -->
+                <div class="flex flex-col items-center justify-center py-1">
+                    <label class="relative group cursor-pointer">
+                        <input type="file" accept="image/*" class="hidden" id="input-foto" onchange="carregarPreview(event)">
+                        <div class="w-24 h-24 rounded-3xl bg-white border-2 border-dashed border-slate-200 group-hover:border-aliancaPurple flex flex-col items-center justify-center gap-1 overflow-hidden shadow-sm transition-all relative">
+                            <!-- Estado Vazio -->
+                            <i data-lucide="camera" class="text-slate-400 group-hover:text-aliancaPurple transition-colors" style="width:22px;height:22px"></i>
+                            <span class="text-[10px] text-slate-400 font-bold tracking-wide group-hover:text-aliancaPurple" id="text-preview">Adicionar Foto</span>
+                            
+                            <!-- Preview da imagem -->
+                            <img id="preview-foto" class="absolute inset-0 w-full h-full object-cover hidden" alt="Preview">
+                        </div>
+                    </label>
+                </div>
+
+                <!-- CAMPO: NOME COMPLETO -->
+                <div class="space-y-1.5">
+                    <label for="nomeKIDS" class="text-[11px] font-bold text-slate-500 tracking-wider uppercase px-1">Nome Completo</label>
+                    <div class="relative flex items-center">
+                        <i data-lucide="user" class="absolute left-4 text-slate-400 pointer-events-none" style="width:18px;height:18px"></i>
+                        <input type="text" id="nomeKIDS" name="nome" placeholder="Ex: Maria Silva" required
+                            class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200/80 rounded-2xl text-sm text-slate-800 placeholder-slate-400/80 focus:outline-none focus:border-aliancaPurple focus:ring-4 focus:ring-aliancaPurple/5 transition-all appearance-none">
+                    </div>
+                </div>
+
+                <!-- GRID: APELIDO E DATA DE NASCIMENTO -->
+                <div class="grid grid-cols-2 gap-3.5">
+                    <!-- CAMPO: APELIDO -->
+                    <div class="space-y-1.5">
+                        <label for="apelidoKIDS" class="text-[11px] font-bold text-slate-500 tracking-wider uppercase px-1">Apelido</label>
+                        <div class="relative flex items-center">
+                            <i data-lucide="smile" class="absolute left-4 text-slate-400 pointer-events-none" style="width:18px;height:18px"></i>
+                            <input type="text" id="apelidoKIDS" name="apelido" placeholder="Ex: Mari"
+                                class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200/80 rounded-2xl text-sm text-slate-800 placeholder-slate-400/80 focus:outline-none focus:border-aliancaPurple focus:ring-4 focus:ring-aliancaPurple/5 transition-all appearance-none">
+                        </div>
+                    </div>
+
+                    <!-- CAMPO: DATA DE NASCIMENTO -->
+                    <div class="space-y-1.5">
+                        <label for="data-nascimento" class="text-[11px] font-bold text-slate-500 tracking-wider uppercase px-1">Nascimento</label>
+                        <div class="relative flex items-center">
+                            <i data-lucide="calendar" class="absolute left-4 text-slate-400 pointer-events-none" style="width:18px;height:18px"></i>
+                            <input type="date" id="data-nascimento" name="dataNascimento" required
+                                class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200/80 rounded-2xl text-sm text-slate-800 focus:outline-none focus:border-aliancaPurple focus:ring-4 focus:ring-aliancaPurple/5 transition-all min-h-[48px]">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEÇÃO: RESTRIÇÃO ALIMENTAR -->
+                <div class="bg-white border border-slate-100 rounded-3xl p-4 space-y-3.5 shadow-sm">
+                    <div class="flex items-center gap-2 text-slate-700">
+                        <div class="w-6 h-6 rounded-lg bg-amber-50 flex items-center justify-center text-amber-500 shrink-0">
+                            <i data-lucide="beef" style="width:14px;height:14px"></i>
+                        </div>
+                        <h3 class="font-bold text-xs tracking-wider uppercase text-slate-600">Restrição Alimentar</h3>
+                    </div>
+
+                    <!-- Opções Rápidas Customizadas -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="flex items-center gap-2.5 p-3.5 bg-slate-50/60 border border-slate-200/60 rounded-xl cursor-pointer active:bg-slate-100 transition-colors">
+                            <input type="radio" name="restricao" value="nao" checked class="w-4 h-4 text-aliancaPurple focus:ring-aliancaPurple border-slate-300 accent-[#5E179B]">
+                            <span class="text-xs font-semibold text-slate-600">Nenhuma</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 p-3.5 bg-slate-50/60 border border-slate-200/60 rounded-xl cursor-pointer active:bg-slate-100 transition-colors">
+                            <input type="radio" name="restricao" value="sim" class="w-4 h-4 text-aliancaPurple focus:ring-aliancaPurple border-slate-300 accent-[#5E179B]">
+                            <span class="text-xs font-semibold text-slate-600">Possui</span>
+                        </label>
+                    </div>
+
+                    <!-- CAMPO: OBSERVAÇÃO -->
+                    <div class="space-y-1.5">
+                        <label for="obs-restricao" class="text-[11px] font-bold text-slate-400 tracking-wide uppercase px-1">Detalhes ou Alergias</label>
+                        <textarea id="obs-restricao" name="obsRestricao" rows="3" placeholder="Ex: Alérgico a amendoim, lactose, etc..."
+                            class="w-full p-3.5 bg-slate-50 border border-slate-200/60 rounded-2xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-aliancaPurple focus:ring-4 focus:ring-aliancaPurple/5 transition-all resize-none appearance-none"></textarea>
+                    </div>
+                </div>
+            </form>
+        </main>
+
+        <!-- FOOTER COM OS BOTÕES DE AÇÃO FIXOS (Estilo Mobile Focado) -->
+        <footer class="p-4 sm:p-5 bg-white border-t border-slate-100 grid grid-cols-2 gap-3 sticky bottom-0 z-10 pb-6 sm:pb-5">
+            <button type="button" onclick="document.getElementById('box').classList.add('hidden')"
+                class="w-full py-4 rounded-2xl border border-slate-200 text-slate-500 font-bold text-sm active:bg-slate-50 active:scale-[0.98] transition-all">
+                Cancelar
+            </button>
+            <button type="submit" form="form-cadastro-familia"
+                class="w-full py-4 rounded-2xl bg-gradient-to-r from-aliancaPurple to-[#4a1282] text-white font-bold text-sm shadow-lg shadow-aliancaPurple/10 active:opacity-95 active:scale-[0.98] transition-all">
+                Salvar Kid
+            </button>
+        </footer>
+
+    </div>
+</div>
+    
+  <section class="max-w-md mx-auto relative bg-slate-50/50 min-h-screen shadow-xl border-x border-slate-100/50">
+   
+   <div id="login-screen" class="screen fixed inset-0 max-w-md mx-auto z-50 p-6 pt-16 pb-12 flex flex-col justify-between bg-white overflow-y-auto">
+    <div class="space-y-8">
+     <div class="text-center space-y-3">
+     <div class="w-16 h-16 rounded-2xl mx-auto overflow-hidden shadow-lg shadow-aliancaPurple/20">
+  <img 
+    src="IMG_SISTEM/logo.png" 
+    alt="Imagem" 
+    class="w-full h-full object-cover"
+  >
+</div>
+      <div>
+       <h2 class="text-2xl font-bold text-slate-800">Aliança Kids</h2>
+       <p class="text-xs text-slate-400 font-medium uppercase tracking-wider mt-0.5">Controle De entrada</p>
+      </div>
+     </div>
+
+     <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4 pt-4">
+      <div class="space-y-1.5">
+       <label for="login-email" class="text-xs font-bold text-slate-500 uppercase tracking-wide">E-mail</label>
+       <div class="relative">
+        <i data-lucide="mail" style="width:16px;height:16px;color:#94A3B8" class="absolute left-4 top-1/2 -translate-y-1/2"></i>
+        <input id="login-email" type="email" required placeholder="exemplo@email.com" class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aliancaPurple/20 focus:border-aliancaPurple transition-all">
+       </div>
+      </div>
+
+      <div class="space-y-1.5">
+       <label for="login-password" class="text-xs font-bold text-slate-500 uppercase tracking-wide">Senha</label>
+       <div class="relative">
+        <i data-lucide="lock" style="width:16px;height:16px;color:#94A3B8" class="absolute left-4 top-1/2 -translate-y-1/2"></i>
+        <input id="login-password" type="password" required placeholder="••••••••" class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aliancaPurple/20 focus:border-aliancaPurple transition-all">
+       </div>
+      </div>
+
+      <div class="flex items-center justify-between text-xs pt-1">
+       <label class="flex items-center gap-2 text-slate-500 font-medium cursor-pointer">
+        
+       </label>
+       <a href="#" class="text-aliancaPurple font-bold hover:underline">Esqueceu a senha?</a>
+      </div>
+
+      <button type="submit" class="w-full py-3.5 mt-4 rounded-xl text-sm font-bold bg-aliancaPurple text-white hover:bg-opacity-95 shadow-md shadow-aliancaPurple/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+       Entrar no App <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
+      </button>
+      <div class="text-center pt-2">
+    <span class="text-sm text-slate-500">
+        Não tem uma conta?
+    </span>
+
+    <a 
+        href="login.html"
+        class="text-sm font-bold text-aliancaPurple hover:underline ml-1">
+        Registrar
+    </a>
+</div>
+     </form>
+    </div>
+
+   </div>
+   
+
+   <div id="home-screen" class="screen pb-28 ">
+    <header class="p-5 flex items-center justify-between bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-100">
+     <div class="flex items-center gap-3">
+      <div class="relative">
+       <img id="current-user-avatar" src="" alt="Avatar" class="w-11 h-11 rounded-full bg-indigo-50 border border-slate-100">
+       <span class="absolute bottom-0 right-0 w-3 h-3 bg-aliancaGreen border-2 border-white rounded-full"></span>
+      </div>
+      <div>
+       <h1 id="current-user-name" class="font-bold text-lg text-slate-800">Carregando...</h1>
+       <h2 class="text-xs text-slate-400 font-medium tracking-wide uppercase">Gestão Familiar</h2>
+      </div>
+     </div>
+     <button class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center border border-slate-200/60 hover:bg-slate-50 transition-colors relative">
+      <i data-lucide="bell" style="width:18px;height:18px;color:#5E179B"></i>
+      <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-aliancaPink rounded-full"></span>
+     </button>
+    </header>
+
+    <main class="px-5 mt-4 space-y-5">
+     <div class="relative group">
+      <i data-lucide="search" style="width:18px;height:18px;color:#94A3B8" class="absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-aliancaPurple transition-colors"></i> 
+      <input id="search-input" type="text" placeholder="Buscar familiar..." class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-aliancaPurple/20 focus:border-aliancaPurple shadow-sm transition-all">
+     </div>
+
+     <div class="rounded-3xl p-6 text-white relative overflow-hidden bg-gradient-to-br from-aliancaPurple via-[#4a1282] to-aliancaBlue shadow-md shadow-aliancaPurple/10">
+      <div class="relative z-10 max-w-[75%]">
+       <span class="bg-white/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">Aliança Kids</span>
+       <h2 class="font-bold text-xl mt-3">Controle de Fluxo</h2>
+       <p class="text-xs opacity-90 mt-1 leading-relaxed">Gerencie as entradas e saídas da sua família em tempo real com segurança.</p>
+      </div>
+      <div class="absolute right-[-10px] bottom-[-10px] opacity-10 transform rotate-12">
+       <i data-lucide="users" style="width:120px;height:120px"></i>
+      </div>
+     </div>
+
+     <section>
+      <div class="flex items-center justify-between mb-3.5">
+       <h3 class="font-bold text-slate-700 text-sm tracking-wide uppercase">Membros da Família</h3>
+       <span id="family-count-tag" class="text-xs text-aliancaPurple font-semibold bg-aliancaPurple/5 px-2.5 py-1 rounded-full">0 Integrantes</span>
+      </div>
+      
+      <div id="member-list" class="space-y-3"></div>
+     </section>
+    </main>
+   </div>
+
+   <div id="familia-screen" class="screen pb-28 ">
+    <!-- HEADER -->
+    <header class="p-5 flex items-center justify-between bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+            <button onclick="showHome('home-screen')" class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center border border-slate-200/60 hover:bg-slate-50 transition-colors">
+                <i data-lucide="arrow-left" style="width:18px;height:18px;color:#5E179B"></i>
+            </button>
+            <div>
+                <h1 class="font-bold text-lg text-slate-800">Minha Família</h1>
+                <h2 class="text-xs text-slate-400 font-medium tracking-wide uppercase">Membros Vinculados</h2>
+            </div>
+        </div>
+        
+        <!-- Botão de Ação Rápida: Abre a tela de cadastro -->
+        <button onclick="document.getElementById('box').classList.remove('hidden')" class="w-10 h-10 rounded-xl bg-aliancaPurple text-white shadow-md shadow-aliancaPurple/20 flex items-center justify-center hover:bg-opacity-95 active:scale-95 transition-all">
+            <i data-lucide="user-plus" style="width:18px;height:18px"></i>
+        </button>
+    </header>
+
+    <!-- MAIN -->
+    <main class="px-5 mt-4 space-y-5">
+        
+        <!-- CARD INFORMATIVO -->
+        <div class="rounded-3xl p-6 text-white relative overflow-hidden bg-gradient-to-br from-aliancaPurple via-[#4a1282] to-aliancaBlue shadow-md shadow-aliancaPurple/10">
+            <div class="relative z-10 max-w-[75%]">
+                <span class="bg-white/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">
+                    Configurações
+                </span>
+                <h2 class="font-bold text-xl mt-3">
+                    Gerenciar Acessos
+                </h2>
+                <p class="text-xs opacity-90 mt-1 leading-relaxed">
+                    Adicione ou gerencie os perfis de quem pode realizar e autorizar o fluxo de entrada e saída.
+                </p>
+            </div>
+            <div class="absolute right-[-10px] bottom-[-10px] opacity-10 transform rotate-12">
+                <i data-lucide="settings" style="width:120px;height:120px"></i>
+            </div>
+        </div>
+
+        <!-- LISTAGEM DE INTEGRANTES -->
+        <section class="space-y-3.5">
+            <div class="flex items-center justify-between">
+                <h3 class="font-bold text-slate-700 text-sm tracking-wide uppercase">Integrantes Ativos</h3>
+                <span id="management-family-count" class="text-xs text-aliancaPurple font-semibold bg-aliancaPurple/5 px-2.5 py-1 rounded-full">
+                    0 Cadastrados
+                </span>
+            </div>
+
+            <!-- Lista container onde seu JavaScript vai renderizar os membros -->
+            <div id="management-member-list" class="space-y-3">
+            
+            </div>
+        </section>
+    </main>
+</div>
+
+   <div id="action-toast" class="hidden fixed top-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-xl text-xs font-semibold z-50 flex items-center gap-2 border border-slate-800 backdrop-blur-md"></div>
+
+   <nav id="bottom-nav" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[calc(448px-2rem)] bg-white/95 backdrop-blur-md border border-slate-100 rounded-2xl shadow-lg shadow-slate-200/80 px-4 py-2.5 flex justify-around z-40">
+    <button class="nav-item active flex flex-col items-center gap-1 p-1" onclick="showHome('home-screen')"> 
+      <i data-lucide="home" style="width:20px;height:20px"></i> 
+      <span class="text-[10px] font-bold tracking-wide">Início</span> 
+    </button> 
+    <button class="nav-item flex flex-col items-center gap-1 p-1"> 
+      <i data-lucide="calendar" style="width:20px;height:20px"></i> 
+      <span class="text-[10px] font-bold tracking-wide">Histórico</span> 
+    </button> 
+    <button class="nav-item flex flex-col items-center gap-1 p-1" onclick="showHome('familia-screen')"> 
+      <i data-lucide="users" style="width:20px;height:20px"></i> 
+      <span class="text-[10px] font-bold tracking-wide">Família</span> 
+    </button> 
+    <button class="nav-item flex flex-col items-center gap-1 p-1 text-rose-500" onclick="handleLogout()"> 
+      <i data-lucide="log-out" style="width:20px;height:20px"></i> 
+      <span class="text-[10px] font-bold tracking-wide">Sair</span> 
+    </button>
+   </nav>
+
+  </div>
+
+  <script>
+    let telaAtual='home-screen'
+    let MOCK_USERS_DB = [];
+    let fileSave= null
+    let boxCadastro = document.getElementById('box')
+    let API_FAMILY_MEMBERS = [];
+
+    let selectedMemberId = null;
+
+    async function loadDados() {
+        try {
+            const buscar = await fetch(`/api/buscarfamilia?idFamily=${MOCK_USERS_DB.familia}`);
+            
+            const respostas = await buscar.json();
+            console.log(respostas)
+
+            API_FAMILY_MEMBERS = respostas
+            renderFamilyList();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        lucide.createIcons();
+        checkAuth();
+    });
+
+    async function checkAuth() {
+        let session = localStorage.getItem("isDadosLogin")
+        
+        if (session) {
+            MOCK_USERS_DB =JSON.parse(session)
+            const enviar = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: MOCK_USERS_DB.email,
+                    senha: MOCK_USERS_DB.senha
+                })
+            });
+            const resposta = await enviar.json()
+            if(!resposta){
+                localStorage.removeItem('isDadosLogin')
+                location.reload()
+                return
+            }
+            localStorage.setItem("isDadosLogin",JSON.stringify(resposta))
+            MOCK_USERS_DB =  JSON.parse(localStorage.getItem("isDadosLogin"));
+
+            document.getElementById('login-screen').classList.add('hidden');
+            
+            // Ativa o ecossistema principal do app
+            document.getElementById('home-screen').classList.add('active');
+            document.getElementById('bottom-nav').classList.remove('hidden');
+
+            loadDados()
+            renderHeaderUser();
+        } else {
+            document.getElementById('home-screen').classList.remove('active');
+            document.getElementById('bottom-nav').classList.add('hidden');
+            
+            document.getElementById('login-screen').classList.add('active');
+        }
+    }
+
+    document.getElementById('form-cadastro-familia').addEventListener('submit',async ()=>{
+        let formData = new FormData()
+        formData.append('imagem',fileSave)
+        const enviar = await fetch('/api/enviarImagem',{       
+                method: 'POST',
+                body: formData
+            })
+            const url = await enviar.json()
+            const urlFinal = `${location.origin}/IMG_DE_PERFIL/${url.arquivo.filename}`;
+
+
+        const nome = document.getElementById('nomeKIDS').value
+        const apelido = document.getElementById('apelidoKIDS').value
+        const nascimento = document.getElementById('data-nascimento').value
+        const foto = urlFinal
+        const restricao = document.querySelector('input[name="restricao"]:checked').value
+        const obs = document.getElementById('obs-restricao').value
+        const forms = {nome, apelido, nascimento, restricao, obs, foto, turma:"KIDS", family: MOCK_USERS_DB.familia }
+
+        try{
+            const response = await fetch('/api/adicionarKids', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(forms)
+            });
+            const respostas = await response.json()
+
+            if(respostas.success){
+                boxCadastro.classList.add('hidden')
+                loadDados()
+                return showToast(apelido + ' foi cadastrado')
+            }
+
+        }catch (error) {
+            console.log(error);
+        }
+
+    })
+
+    async function handleLogin(event) {
+        event.preventDefault();
+        const emailInput = document.getElementById('login-email').value;
+        const passwordInput = document.getElementById('login-password').value;
+
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: emailInput,
+                senha: passwordInput
+            })
+        });
+
+        const userFound = await response.json();
+
+
+        if (userFound) {
+            localStorage.setItem("isDadosLogin", JSON.stringify(userFound));
+            showToast("Login realizado com sucesso!");
+            location.reload();
+            setTimeout(checkAuth, 500);
+        } else {
+            showToast("E-mail ou senha incorretos.", false);
+        }
+    }
+
+   
+    function handleLogout() {
+        localStorage.removeItem("isDadosLogin");
+        checkAuth();
+        showToast("Sessão encerrada!");
+    }
+
+    function renderHeaderUser() {
+        document.getElementById('current-user-name').textContent = `Olá, ${MOCK_USERS_DB.nome.split(' ')[0]}!`;
+        document.getElementById('current-user-avatar').src = MOCK_USERS_DB.foto;
+    }
+
+   async function carregarPreview(event) {
+    const file = event.target.files[0]
+    if (!file) return
+
+    const tiposPermitidos = ["image/png", "image/jpeg", "image/jpg"];
+    let arquivoFinal = file;
+
+    // Se não for PNG ou JPG (ex: HEIC do iPhone), passa pela conversão
+    if (!tiposPermitidos.includes(file.type)) {
+        try {
+            // Mostra um feedback visual simples enquanto converte (opcional)
+         document.getElementById('text-preview').innerText = 'Carregando'
+            arquivoFinal = await enviarImagem(file);
+        } catch (erro) {
+            console.error(erro);
+            alert("Erro ao processar imagem do iPhone.");
+            return;
+        }
+    }
+    fileSave = arquivoFinal
+    const urlteste = URL.createObjectURL(arquivoFinal)
+    document.getElementById('preview-foto').src = urlteste
+    document.getElementById('preview-foto').classList.remove('hidden')
+
+}
+
+async function enviarImagem(file) {
+    const formData = new FormData();
+    formData.append("imagem", file);
+
+    const response = await fetch("/api/converterImagem", {
+        method: "POST",
+        body: formData
+    });
+
+    if (!response.ok) throw new Error("Falha na conversão da imagem");
+
+    const blob = await response.blob();
+    
+    // 🔥 Transforma o Blob de volta em um arquivo File com extensão .jpg
+    const novoNome = file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+    const arquivoJpg = new File([blob], novoNome, {
+        type: "image/jpeg",
+        lastModified: Date.now()
+    });
+
+    return arquivoJpg; // Agora retorna um File legítimo!
+}
+
+    function renderFamilyList() {
+        members  = API_FAMILY_MEMBERS 
+        const container = document.getElementById('member-list');
+        const countTag = document.getElementById('family-count-tag');
+        
+        container.innerHTML = '';
+        countTag.textContent = `${members.length} Integrantes`;
+
+        members.forEach(member => {
+            const isKid = member.class === 'KIDS';
+            const badgeColor = isKid ? 'bg-pink-50 text-aliancaPink border-pink-100/50' : 'bg-purple-50 text-aliancaPurple border-purple-100/50';
+            const badgeLabel = isKid ? 'Infantil (KID)' : 'Responsável (RESP)';
+            const statusDot = member.status === 'Na Escola' ? 'bg-aliancaGreen' : 'bg-slate-300';
+
+            const card = document.createElement('div');
+            card.className = "member-card bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow-md transition-all";
+            card.innerHTML = `
+                <div class="flex items-center justify-between">
+                 <div class="flex items-center gap-3">
+                  <div class="relative">
+                   <img src="${member.foto}" alt="${member.nome}" class="w-12 h-12 rounded-full bg-slate-50 border border-slate-100">
+                   <span class="absolute bottom-0 right-0 w-3 h-3 ${statusDot} border-2 border-white rounded-full"></span>
+                  </div>
+                    <div>
+                    <p class="member-name font-bold text-slate-800">${member.nome}</p>
+                    <p class="text-xs text-slate-400 font-medium">${badgeLabel}</p>
+                    <p class="text-[11px] mt-0.5 text-slate-400 flex items-center gap-1">
+                        <i data-lucide="clock" style="width:12px;height:12px"></i> ${member.ultimaAtividade}
+                    </p>
+                    </div>
+                 </div>
+                 ${member.class != 'RESP' ? `
+                 <span class="text-xs px-3 py-1 rounded-full font-bold ${badgeColor} border">${member.status}</span>
+                  ` : ''}
+                </div>
+            ${member.class != 'RESP' ? `
+                <div class="flex gap-2.5 mt-4">
+                <button class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-aliancaPurple text-white hover:bg-opacity-95 shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-1">
+                    <i data-lucide="log-in" style="width:14px;height:14px"></i>
+                    Registrar Entrada
+                </button> 
+
+                <button class="flex-1 py-2.5 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 hover:bg-slate-50 active:scale-[0.98] transition-all flex items-center justify-center gap-1">
+                    <i data-lucide="log-out" style="width:14px;height:14px"></i>
+                    Gerar Retirada
+                </button>
+                </div>
+                ` : ''}
+            
+            `;
+            container.appendChild(card);
+        });
+        lucide.createIcons();
+    }
+
+    function showActions(id) {
+        const member = API_FAMILY_MEMBERS.find(m => m.id === id);
+        if (!member) return;
+
+        selectedMemberId = id;
+        document.getElementById('home-screen').classList.remove('active');
+        document.getElementById('actions-screen').classList.add('active');
+        
+        document.getElementById('action-name').textContent = member.nome;
+        document.getElementById('action-relation').textContent = member.class === 'KID' ? 'Usuário Infantil (KID)' : 'Responsável (RESP)';
+        document.getElementById('action-avatar').src = member.foto;
+        lucide.createIcons();
+    }
+
+    function showHome(id) {
+        document.getElementById(telaAtual).classList.remove('active');
+        document.getElementById(id).classList.add('active');
+        telaAtual = id
+
+        selectedMemberId = null;
+    }
+
+
+    function doCheckout() { 
+        const member = API_FAMILY_MEMBERS.find(m => m.id === selectedMemberId);
+        if(member) {
+            member.status = "Fora";
+            member.ultimaAtividade = `Última saída: Hoje, ${new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'})}`;
+            showToast(`Saída de ${member.nome.split(' ')[0]} autorizada!`, false);
+            renderFamilyList();
+            setTimeout(showHome, 1200);
+        }
+    }
+
+    function showToast(msg, isSuccess = true) {
+        const t = document.getElementById('action-toast');
+        t.innerHTML = isSuccess 
+            ? `<i data-lucide="check-circle-2" class="text-aliancaGreen" style="width:16px;height:16px"></i> ${msg}` 
+            : `<i data-lucide="alert-circle" class="text-aliancaOrange" style="width:16px;height:16px"></i> ${msg}`;
+        lucide.createIcons();
+        
+        t.classList.remove('hidden');
+        setTimeout(() => t.classList.add('hidden'), 2500);
+    }
+
+    document.getElementById('search-input').addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase();
+        document.querySelectorAll('.member-card').forEach(card => {
+            const name = card.querySelector('.member-name').textContent.toLowerCase();
+            card.style.display = name.includes(query) ? '' : 'none';
+        });
+    });
+  </script>
+ </body>
+</html>
