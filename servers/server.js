@@ -89,7 +89,7 @@ app.post('/api/adicionarKids', (req, res) => {
             obs || '',
             turma || '',
             family || '',
-            new Date().toISOString(),
+            null,
             'ativo'
         );
         res.status(200).json({ success: true, message: 'Kid cadastrado com sucesso', IDKIDS });
