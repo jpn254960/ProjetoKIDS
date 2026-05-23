@@ -154,7 +154,13 @@
             <div class="flex-1 overflow-y-auto relative z-10">
                 <div class="p-6 md:p-12 max-w-xl mx-auto min-h-full flex flex-col justify-center">
                     
-                    <div id="toast-container" class="fixed top-4 right-4 z-50"></div>
+
+                <div 
+                    id="toast-container" 
+                    class="fixed top-20 md:top-4 right-4 left-4 md:left-auto z-50">
+                </div>
+
+
                     
                     <form id="register-form" class="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-purple-100/40 space-y-8">
                         
@@ -268,7 +274,7 @@
                         
                         <div class="text-center pt-2">
                             <p class="text-xs text-gray-400">
-                                Já tem uma conta? <a href="#" class="font-bold text-brandPurple hover:underline">Log in</a>
+                                Já tem uma conta? <a href="index.html" class="font-bold text-brandPurple hover:underline">Log in</a>
                             </p>
                         </div>
                     </form>
@@ -370,9 +376,11 @@ async function enviarImagem(file) {
         if(step==2 && !formData.imagemBase64){return showToast('Foto de Perfil obrigadoria','error')}
 
         if (step > currentStep) {
-            if (!validateStep(currentStep)) {
-                showToast('Preencha os campos obrigatórios corretamente', 'error');
-                return;
+
+            const validation = validateStep(currentStep)
+            if (validation !== true) {
+                showToast(validation, 'error')
+                return
             }
 
             if (currentStep === 2) {
@@ -457,53 +465,159 @@ async function enviarImagem(file) {
             : `<span class="text-xs text-gray-400">Não enviada</span>`;
 
         section.innerHTML = `
-            <h3 class="text-sm font-bold text-brandPurple uppercase tracking-wider mb-3">Informações de Perfil</h3>
-            <div class="review-row flex items-center justify-between">
-                <span class="review-label">Foto de Perfil:</span>
-                <span class="review-value">${imgTag}</span>
+<div class="mb-6 core-profile-review">
+    <!-- Cabeçalho do Painel -->
+    <h3 class="text-xs font-bold text-brandPurple uppercase tracking-wider mb-4 flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+        Informações de Perfil
+    </h3>
+
+    <!-- Lista de Informações (Apenas as linhas, sem o card em volta) -->
+    <div class="divide-y divide-slate-100 space-y-3.5">
+        
+        <!-- Foto de Perfil -->
+        <div class="flex items-center justify-between pb-3.5">
+            <span class="text-sm font-medium text-slate-500">Foto de Perfil</span>
+            <div class="w-12 h-12 rounded-full overflow-hidden bg-slate-50 flex items-center justify-center border border-slate-200">
+                ${imgTag || '<svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>'}
             </div>
-            <div class="review-row">
-                <span class="review-label">Nome:</span>
-                <span class="review-value">${formData.nome || '-'}</span>
+        </div>
+
+        <!-- Nome -->
+        <div class="flex justify-between items-start pt-3.5">
+            <span class="text-sm font-medium text-slate-500">Nome</span>
+            <span class="text-sm font-semibold text-slate-800 text-right max-w-[60%] truncate">${formData.nome || '-'}</span>
+        </div>
+
+        <!-- Sobrenome -->
+        <div class="flex justify-between items-start pt-3.5">
+            <span class="text-sm font-medium text-slate-500">Família / Sobrenome</span>
+            <span class="text-sm font-semibold text-slate-800 text-right max-w-[60%] truncate">${formData.familia || '-'}</span>
+        </div>
+
+        <!-- E-mail -->
+        <div class="flex justify-between items-start pt-3.5">
+            <span class="text-sm font-medium text-slate-500">E-mail</span>
+            <span class="text-sm font-semibold text-slate-800 text-right max-w-[60%] break-all">${formData.email || '-'}</span>
+        </div>
+
+        <!-- Celular -->
+        <div class="flex justify-between items-start pt-3.5">
+            <span class="text-sm font-medium text-slate-500">Celular</span>
+            <span class="text-sm font-semibold text-slate-800 text-right">${formData.telefone || '-'}</span>
+        </div>
+
+        <!-- Senha Protegida -->
+        <div class="flex justify-between items-center pt-3.5">
+            <span class="text-sm font-medium text-slate-500">Senha</span>
+            <div class="flex items-center gap-2 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200">
+                <span id="review-password-value" class="text-sm font-mono text-slate-700 font-bold tracking-mini">••••••••</span>
+                <button type="button" onclick="toggleReviewPassword(this, '${formData.senha?.replace(/'/g, "\\'") || ''}')" class="text-slate-400 hover:text-brandPurple transition-colors focus:outline-none">
+                    <svg class="w-4 h-4 eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                </button>
             </div>
-            <div class="review-row">
-                <span class="review-label">Família / Sobrenome:</span>
-                <span class="review-value">${formData.familia || '-'}</span>
-            </div>
-            <div class="review-row">
-                <span class="review-label">E-mail:</span>
-                <span class="review-value">${formData.email || '-'}</span>
-            </div>
-            <div class="review-row">
-                <span class="review-label">Celular:</span>
-                <span class="review-value">${formData.telefone || '-'}</span>
-            </div>
-            <div class="review-row">
-                <span class="review-label">Senha:</span>
-                <span class="review-value">${formData.senha}</span>
-            </div>
-        `;
+        </div>
+
+    </div>
+</div>
+`;
         content.appendChild(section);
     }
-
+    function contemApenasNumeros(texto) {
+  return /^\d+$/.test(texto);
+}
     function validateStep(step) {
+
         if (step === 1) {
-            const nome = document.getElementById('nome');
-            const familia = document.getElementById('familia');
-            const email = document.getElementById('email');
+
+            const nome = document.getElementById('nome')
+            const familia = document.getElementById('familia')
+            const email = document.getElementById('email')
             const telefone = document.getElementById('telefone')
-            return nome && nome.value.trim() !== '' && 
-                   familia && familia.value.trim() !== '' && 
-                   email && email.value.trim() !== '' && email.checkValidity() &&
-                   telefone  && telefone.value.trim() !== ''
+
+            if (!nome || nome.value.trim() === '') {
+                return 'Preencha o nome'
+            }
+
+            if (!familia || familia.value.trim() === '') {
+                return 'Preencha a família'
+            }
+
+            if (!email || email.value.trim() === '') {
+                return 'Preencha o email'
+            }
+
+            if (!email.checkValidity()) {
+                return 'Digite um email válido'
+            }
+
+            if (!telefone || telefone.value.trim() === '') {
+                return 'Preencha o telefone'
+            }
+
+            if (!contemApenasNumeros(telefone.value)) {
+                return 'Telefone somente numero'
+            }
+
+            return true
         }
+
         if (step === 2) {
-            const senha = document.getElementById('senha');
-            const confirm = document.getElementById('confirm-password');
-            return senha && senha.value.trim() !== '' && confirm && confirm.value.trim() !== '';
+
+            const senha = document.getElementById('senha')
+            const confirm = document.getElementById('confirm-password')
+
+            if (!senha || senha.value.trim() === '') {
+                return 'Preencha a senha'
+            }
+
+            if (!confirm || confirm.value.trim() === '') {
+                return 'Confirme a senha'
+            }
+
+            if (senha.value !== confirm.value) {
+                return 'As senhas não coincidem'
+            }
+
+            return true
         }
-        return true;
+
+        return true
     }
+
+    function toggleReviewPassword(button, senha) {
+
+        const passwordText = document.getElementById('review-password-value')
+        const icon = button.querySelector('.eye-icon')
+
+        if (passwordText.dataset.visible === 'true') {
+
+            passwordText.textContent = '••••••••'
+            passwordText.dataset.visible = 'false'
+
+            icon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
+                </path>
+
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                </path>
+            `
+
+        } else {
+
+            passwordText.textContent = senha
+            passwordText.dataset.visible = 'true'
+
+            icon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.956 9.956 0 012.223-3.592M6.18 6.18A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.97 9.97 0 01-4.132 5.411M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 6L3 3">
+                </path>
+            `
+        }
+    }
+
 
     function showToast(msg, type = 'success') {
         const container = document.getElementById('toast-container');
