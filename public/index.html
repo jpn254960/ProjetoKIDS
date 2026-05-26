@@ -33,6 +33,189 @@
     </style>
  </head>
  <body class="w-full min-h-screen text-slate-800 antialiased">
+    <!-- TELA DE CONFIRMAÇÃO DE PRESENÇA -->
+     <!-- PAINEL DE CONFIRMAÇÃO DE PRESENÇA (SOBREPOSTO/FIXO) - ALIANÇA KIDS -->
+    <div id="confirmation-screen" class="hidden fixed inset-0 max-w-md mx-auto z-50 p-6 pt-16 pb-12 flex flex-col justify-between bg-white overflow-y-auto">
+    <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-aliancaPurple/5 to-transparent pointer-events-none -z-10"></div>
+
+    <div class="space-y-6 flex-1 flex flex-col justify-center">
+        
+        <div class="w-20 h-20 mx-auto text-aliancaPurple bg-white rounded-2xl flex items-center justify-center shadow-lg shadow-aliancaPurple/10 border border-purple-50">
+            <i data-lucide="check-circle-2" style="width: 56px; height: 56px;" class="stroke-[1.5]"></i>
+        </div>
+
+        <div class="text-center space-y-1">
+            <h1 class="text-2xl font-bold tracking-tight text-slate-800" id="ConfTitulo">Entrada Confirmada</h1>
+            <p class="text-xs font-medium text-slate-400" id="ConfSubtitulo">Seu filho(a) entrou na sala com sucesso.</p>
+        </div>
+
+        <div class="flex justify-center">
+            <div class="w-24 h-24 rounded-2xl overflow-hidden shadow-md shadow-slate-200 border-2 border-white">
+                <img 
+                    src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?q=80&w=240&auto=format&fit=crop" 
+                    alt="Foto"
+                    id="ImagemKids"
+                    class="w-full h-full object-cover"
+                />
+            </div>
+        </div>
+
+        <div class="w-full bg-slate-50/80 rounded-2xl p-4 space-y-3.5 border border-slate-100">
+            
+            <div class="flex justify-between items-center">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Criança</span>
+                <span class="text-base font-bold text-slate-800" id="NameKids">Maria Souza</span>
+            </div>
+            
+            <div class="h-[1px] bg-slate-200/50 w-full"></div>
+
+            <div class="flex justify-between items-center">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Sala</span>
+                <span class="text-sm font-semibold text-slate-700" id="SalaKids">Sala Infantil 3</span>
+            </div>
+
+            <div class="h-[1px] bg-slate-200/50 w-full"></div>
+
+            <div class="flex justify-between items-center">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400" id="LabelHorario">Horário de Entrada</span>
+                <span class="text-xs font-bold text-slate-600 bg-white px-2.5 py-1 rounded-lg border border-slate-200/60 shadow-sm font-mono" id="DataKids">08:15</span>
+            </div>
+
+            <div class="h-[1px] bg-slate-200/50 w-full"></div>
+
+            <div class="flex justify-between items-center">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400" id="LabelProf">Recepcionado por</span>
+                <span class="text-sm font-semibold text-slate-700 flex items-center gap-1.5" id="ProfKids">
+                    <i data-lucide="user-check" style="width: 14px; height: 14px;" class="text-slate-400"></i>
+                    Prof. Juliana
+                </span>
+            </div>
+        </div>
+
+        <div id="ConfAlertaContainer" class="w-full bg-purple-50/60 border border-aliancaPurple/10 rounded-xl p-3 flex items-center justify-center gap-2">
+            <i data-lucide="shield-check" style="width: 16px; height: 16px;" class="text-aliancaPurple"></i>
+            <p class="text-xs font-bold text-aliancaPurple uppercase tracking-wide">Entrada registrada com segurança</p>
+        </div>
+
+    </div>
+
+    <div class="mt-8 w-full space-y-4">
+        <button 
+            type="button"
+            onclick="document.getElementById('confirmation-screen').classList.add('hidden')"
+            class="w-full py-3.5 rounded-xl text-sm font-bold bg-aliancaPurple text-white hover:bg-opacity-95 shadow-md shadow-aliancaPurple/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+        >
+            Voltar para o Início
+            <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
+        </button>
+
+        <div class="flex justify-between items-center text-[10px] text-slate-400 px-1 font-medium uppercase tracking-wider">
+            <span>Controle de Fluxo</span>
+            <span class="font-mono lowercase normal-case">24/05/2026</span>
+        </div>
+    </div>
+</div>
+<div id="box-responsavel" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-sm flex items-end sm:items-center justify-center transition-opacity duration-300">
+    
+    <!-- Container do Formulário (Bottom Sheet no Mobile, Modal no Desktop) -->
+    <div class="bg-slate-50 w-full sm:max-w-lg rounded-t-[2rem] sm:rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100/80 max-h-[92vh] sm:max-h-[85vh] flex flex-col transition-all transform duration-300 translate-y-0">
+        
+        <!-- HEADER DO FORMULÁRIO -->
+        <header class="p-5 flex items-center justify-between bg-white sticky top-0 z-10 border-b border-slate-100">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-aliancaPurple/10 flex items-center justify-center shrink-0">
+                    <i data-lucide="shield-check" style="width:18px;height:18px;color:#5E179B"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base sm:text-lg text-slate-800 leading-tight">Novo Responsável</h1>
+                    <h2 class="text-[10px] sm:text-xs text-slate-400 font-semibold tracking-wide uppercase mt-0.5">Dados de Contato e Segurança</h2>
+                </div>
+            </div>
+            
+            <!-- Botão de Fechar Otimizado para Touch -->
+            <button onclick="document.getElementById('box-responsavel').classList.add('hidden')" class="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200/60 flex items-center justify-center text-slate-400 hover:text-slate-600 active:bg-slate-100 transition-all">
+                <i data-lucide="x" style="width:18px;height:18px"></i>
+            </button>
+        </header>
+
+        <!-- CORPO DO FORMULÁRIO (Rolagem interna macia) -->
+        <main class="flex-1 overflow-y-auto p-5 space-y-5 overscroll-contain">
+            <form id="form-cadastro-responsavel" class="space-y-5" onsubmit="event.preventDefault();">
+                
+                <!-- SELEÇÃO DE FOTO -->
+                <div class="flex flex-col items-center justify-center py-1" id="painel_foto_responsavel">
+                    <label class="relative group cursor-pointer">
+                        <input type="file" accept="image/*" class="hidden" id="input-foto-responsavel" onchange="carregarPreview(event,2)">
+                        <div class="w-24 h-24 rounded-3xl bg-white border-2 border-dashed border-slate-200 group-hover:border-aliancaPurple flex flex-col items-center justify-center gap-1 overflow-hidden shadow-sm transition-all relative">
+                            <!-- Estado Vazio -->
+                            <i data-lucide="camera" class="text-slate-400 group-hover:text-aliancaPurple transition-colors" style="width:22px;height:22px"></i>
+                            <span class="text-[10px] text-slate-400 font-bold tracking-wide group-hover:text-aliancaPurple" id="text-preview-responsavel">Adicionar Foto</span>
+                            
+                            <!-- Preview da imagem -->
+                            <img id="preview-foto-responsavel" class="absolute inset-0 w-full h-full object-cover hidden" alt="Preview">
+                        </div>
+                    </label>
+                </div>
+
+                <!-- CAMPO: NOME COMPLETO -->
+                <div class="space-y-1.5">
+                    <label for="nomeResponsavel" class="text-[11px] font-bold text-slate-500 tracking-wider uppercase px-1">Nome Completo</label>
+                    <div class="relative flex items-center">
+                        <i data-lucide="user" class="absolute left-4 text-slate-400 pointer-events-none" style="width:18px;height:18px"></i>
+                        <input type="text" id="nomeResponsavel" name="nome" placeholder="Ex: João Silva" required
+                            class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200/80 rounded-2xl text-sm text-slate-800 placeholder-slate-400/80 focus:outline-none focus:border-aliancaPurple focus:ring-4 focus:ring-aliancaPurple/5 transition-all appearance-none">
+                    </div>
+                </div>
+
+                <!-- CAMPO: TELEFONE / WHATSAPP -->
+                <div class="space-y-1.5">
+                    <label for="telResponsavel" class="text-[11px] font-bold text-slate-500 tracking-wider uppercase px-1">Telefone / WhatsApp</label>
+                    <div class="relative flex items-center">
+                        <i data-lucide="phone" class="absolute left-4 text-slate-400 pointer-events-none" style="width:18px;height:18px"></i>
+                        <input type="tel" id="telResponsavel" name="telefone" placeholder="Ex: (11) 99999-9999" required
+                            class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200/80 rounded-2xl text-sm text-slate-800 placeholder-slate-400/80 focus:outline-none focus:border-aliancaPurple focus:ring-4 focus:ring-aliancaPurple/5 transition-all appearance-none">
+                    </div>
+                </div>
+
+                <!-- CAMPO: E-MAIL -->
+                <div class="space-y-1.5">
+                    <label for="emailResponsavel" class="text-[11px] font-bold text-slate-500 tracking-wider uppercase px-1">E-mail</label>
+                    <div class="relative flex items-center">
+                        <i data-lucide="mail" class="absolute left-4 text-slate-400 pointer-events-none" style="width:18px;height:18px"></i>
+                        <input type="email" id="emailResponsavel" name="email" placeholder="Ex: joao@email.com" required
+                            class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200/80 rounded-2xl text-sm text-slate-800 placeholder-slate-400/80 focus:outline-none focus:border-aliancaPurple focus:ring-4 focus:ring-aliancaPurple/5 transition-all appearance-none">
+                    </div>
+                </div>
+
+                <!-- SEÇÃO INFORMATIVA: VÍNCULO DE SEGURANÇA -->
+                <div class="bg-blue-50/50 border border-blue-100 rounded-3xl p-4 space-y-2 shadow-sm">
+                    <div class="flex items-center gap-2 text-blue-700">
+                        <div class="w-6 h-6 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
+                            <i data-lucide="info" style="width:14px;height:14px"></i>
+                        </div>
+                        <h3 class="font-bold text-xs tracking-wider uppercase text-blue-700">Importante</h3>
+                    </div>
+                    <p class="text-xs text-blue-600/90 leading-relaxed px-1">
+                        Este responsável receberá notificações e terá autorização para realizar o check-in e check-out das crianças vinculadas.
+                    </p>
+                </div>
+            </form>
+        </main>
+
+        <!-- FOOTER COM OS BOTÕES DE AÇÃO FIXOS -->
+        <footer class="p-4 sm:p-5 bg-white border-t border-slate-100 grid grid-cols-2 gap-3 sticky bottom-0 z-10 pb-6 sm:pb-5">
+            <button type="button" onclick="document.getElementById('box-responsavel').classList.add('hidden')" id="btCancelarResponsavel"
+                class="w-full py-4 rounded-2xl border border-slate-200 text-slate-500 font-bold text-sm active:bg-slate-50 active:scale-[0.98] transition-all">
+                Cancelar
+            </button>
+            <button type="submit" form="form-cadastro-responsavel" id="btSALVARRESPONSAVEL"
+                class="w-full py-4 rounded-2xl bg-gradient-to-r from-aliancaPurple to-[#4a1282] text-white font-bold text-sm shadow-lg shadow-aliancaPurple/10 active:opacity-95 active:scale-[0.98] transition-all">
+                Salvar Responsável
+            </button>
+        </footer>
+
+    </div>
+</div>    
     <!-- TELA DE CADASTRO (BOX) -->
  <!-- TELA DE CADASTRO (BOX) -->
 <div id="box" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-sm flex items-end sm:items-center justify-center transition-opacity duration-300">
@@ -47,7 +230,7 @@
                     <i data-lucide="user-plus" style="width:18px;height:18px;color:#5E179B"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-base sm:text-lg text-slate-800 leading-tight">Novo Integrante</h1>
+                    <h1 class="font-bold text-base sm:text-lg text-slate-800 leading-tight">Nova criança</h1>
                     <h2 class="text-[10px] sm:text-xs text-slate-400 font-semibold tracking-wide uppercase mt-0.5">Adicionar à Família</h2>
                 </div>
             </div>
@@ -63,9 +246,9 @@
             <form id="form-cadastro-familia" class="space-y-5" onsubmit="event.preventDefault();">
                 
                 <!-- SELEÇÃO DE FOTO -->
-                <div class="flex flex-col items-center justify-center py-1">
+                <div class="flex flex-col items-center justify-center py-1" id="painel_foto">
                     <label class="relative group cursor-pointer">
-                        <input type="file" accept="image/*" class="hidden" id="input-foto" onchange="carregarPreview(event)">
+                        <input type="file" accept="image/*" class="hidden" id="input-foto" onchange="carregarPreview(event,1)">
                         <div class="w-24 h-24 rounded-3xl bg-white border-2 border-dashed border-slate-200 group-hover:border-aliancaPurple flex flex-col items-center justify-center gap-1 overflow-hidden shadow-sm transition-all relative">
                             <!-- Estado Vazio -->
                             <i data-lucide="camera" class="text-slate-400 group-hover:text-aliancaPurple transition-colors" style="width:22px;height:22px"></i>
@@ -143,12 +326,12 @@
 
         <!-- FOOTER COM OS BOTÕES DE AÇÃO FIXOS (Estilo Mobile Focado) -->
         <footer class="p-4 sm:p-5 bg-white border-t border-slate-100 grid grid-cols-2 gap-3 sticky bottom-0 z-10 pb-6 sm:pb-5">
-            <button type="button" onclick="document.getElementById('box').classList.add('hidden')"
+            <button type="button" onclick="document.getElementById('box').classList.add('hidden')" id="btCancelar"
                 class="w-full py-4 rounded-2xl border border-slate-200 text-slate-500 font-bold text-sm active:bg-slate-50 active:scale-[0.98] transition-all">
                 Cancelar
             </button>
             <button type="submit" form="form-cadastro-familia"
-                class="w-full py-4 rounded-2xl bg-gradient-to-r from-aliancaPurple to-[#4a1282] text-white font-bold text-sm shadow-lg shadow-aliancaPurple/10 active:opacity-95 active:scale-[0.98] transition-all">
+                class="w-full py-4 rounded-2xl bg-gradient-to-r from-aliancaPurple to-[#4a1282] text-white font-bold text-sm shadow-lg shadow-aliancaPurple/10 active:opacity-95 active:scale-[0.98] transition-all" id="btSALVARKID">
                 Salvar Kid
             </button>
         </footer>
@@ -295,23 +478,44 @@
 
    <div id="familia-screen" class="screen pb-28 ">
     <!-- HEADER -->
-    <header class="p-5 flex items-center justify-between bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-100">
-        <div class="flex items-center gap-3">
-              <div class="relative">
-                <img id="current-user-avatar" src="" alt="Avatar" class="w-11 h-11 rounded-full bg-indigo-50 border border-slate-100">
-                <span class="absolute bottom-0 right-0 w-3 h-3 bg-aliancaGreen border-2 border-white rounded-full"></span>
-                </div>
-            <div>
-                <h1 class="font-bold text-lg text-slate-800">Minha Família</h1>
-                <h2 class="text-xs text-slate-400 font-medium tracking-wide uppercase">Membros Vinculados</h2>
-            </div>
+<header class="p-5 flex items-center justify-between bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-100">
+    
+    <div class="flex items-center gap-3">
+        <div class="relative">
+            <img id="current-user-avatar" src="" alt="Avatar" class="w-11 h-11 rounded-full bg-indigo-50 border border-slate-100">
+            <span class="absolute bottom-0 right-0 w-3 h-3 bg-aliancaGreen border-2 border-white rounded-full"></span>
         </div>
-        
-        <!-- Botão de Ação Rápida: Abre a tela de cadastro -->
-        <button onclick="document.getElementById('box').classList.remove('hidden')" class="w-10 h-10 rounded-xl bg-aliancaPurple text-white shadow-md shadow-aliancaPurple/20 flex items-center justify-center hover:bg-opacity-95 active:scale-95 transition-all">
+
+        <div>
+            <h1 class="font-bold text-lg text-slate-800">Minha Família</h1>
+            <h2 class="text-xs text-slate-400 font-medium tracking-wide uppercase">
+                Membros Vinculados
+            </h2>
+        </div>
+    </div>
+
+    <!-- AÇÕES -->
+    <div class="flex items-center gap-2">
+
+        <!-- Adicionar Responsável -->
+        <button 
+            onclick="abrirModalResponsavel()"
+            class="w-10 h-10 rounded-xl bg-aliancaGreen text-white shadow-md shadow-aliancaGreen/20 flex items-center justify-center hover:bg-opacity-95 active:scale-95 transition-all"
+        >
+            <i data-lucide="users" style="width:18px;height:18px"></i>
+        </button>
+
+        <!-- Adicionar Kid -->
+        <button 
+            onclick="abrirModalFamilia()"
+            class="w-10 h-10 rounded-xl bg-aliancaPurple text-white shadow-md shadow-aliancaPurple/20 flex items-center justify-center hover:bg-opacity-95 active:scale-95 transition-all"
+        >
             <i data-lucide="user-plus" style="width:18px;height:18px"></i>
         </button>
-    </header>
+
+    </div>
+
+</header>
 
     <!-- MAIN -->
     <main class="px-5 mt-4 space-y-5">
@@ -379,8 +583,14 @@
     let MOCK_USERS_DB = [];
     let fileSave= null
     let boxCadastro = document.getElementById('box')
+    let enviando = false;
     let API_FAMILY_MEMBERS = [];
-
+    let API_RUN_KIDS = [
+        {nome:'Nénens',min:1,max:3,status:true,prof:'Mariana'},
+        {nome:'Babys',min:4,max:6,status:true,prof:'Regina'},
+        {nome:'Kids',min:7,max:11,status:true,prof:'Fernanda'},
+        {nome:'Teens',min:12,max:15,status:false,prof:''}
+    ]
     let selectedMemberId = null;
 
     async function loadDados() {
@@ -388,13 +598,17 @@
             const buscar = await fetch(`/api/buscarfamilia?idFamily=${MOCK_USERS_DB.familia}`);
             
             const respostas = await buscar.json();
-            console.log(respostas)
 
             API_FAMILY_MEMBERS = respostas
             renderFamilyList();
         } catch (error) {
             console.log(error);
         }
+    }
+
+    function obterSala(idade) {
+        const sala = API_RUN_KIDS.find(item => {return idade >= item.min && idade <= item.max && item.status;});
+        return {sala:sala ? sala.nome : null,prof:sala ? sala.prof:null}
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -442,26 +656,140 @@
         }
     }
 
-    document.getElementById('form-cadastro-familia').addEventListener('submit',async ()=>{
-        let formData = new FormData()
-        formData.append('imagem',fileSave)
-        const enviar = await fetch('/api/enviarImagem',{       
+    async function verificarLoogin(email) {
+        try {
+            const enviar = await fetch('/api/verficarEmail?email='+email)
+            const resposta = await enviar.json()
+            return resposta
+        }catch(error){
+              showToast('Erro ao conectar com o servidor', 'error');
+              return false;
+        }
+    }
+
+    document.getElementById('form-cadastro-responsavel').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        let forms = null
+        if(!fileSave){return showToast('Foto obrigatoria',false)}
+        try{
+            const nome = document.getElementById('nomeResponsavel').value
+            const email = document.getElementById('emailResponsavel').value
+            const telefone = document.getElementById('telResponsavel').value
+            const familia = MOCK_USERS_DB.familia
+            let foto = null
+            const senha = nome.substring(0,3)+'123'
+            const result = await verificarLoogin(email)
+
+            if(result){return showToast('Este Email já está em uso',false)}
+
+            document.getElementById('btSALVARRESPONSAVEL').innerText = 'Salvando...';
+            document.getElementById('btSALVARRESPONSAVEL').disabled = true
+            document.getElementById('btCancelarResponsavel').disabled = true
+            document.getElementById('btSALVARRESPONSAVEL').className = 'w-full py-4 rounded-2xl bg-gray-500/40 text-white/40 font-bold text-sm cursor-not-allowed opacity-60 shadow-none'
+                        
+            let formData = new FormData();
+            formData.append('imagem', fileSave);
+
+            const enviar = await fetch('/api/enviarImagem', {
                 method: 'POST',
                 body: formData
+            });
+        
+            const url = await enviar.json();
+            foto = `${location.origin}/IMG_DE_PERFIL/${url.arquivo.filename}`;
+            forms = {nome,email,telefone,foto,familia,senha}
+
+            const post = await fetch('/api/novoResponsavel',{
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(forms)
             })
-            const url = await enviar.json()
-            const urlFinal = `${location.origin}/IMG_DE_PERFIL/${url.arquivo.filename}`;
+            const respostas = await post.json()
+            if(respostas.success){
+                showToast('Responsavel registrado')
+                document.getElementById('box-responsavel').classList.add('hidden')
+            }
+        
+        }catch(error) {
+            console.error(error);
+            showToast('Erro ao cadastrar', false);
+        }
+        finally{
+                document.getElementById('btSALVARRESPONSAVEL').innerText= 'Salvar responsavel'
+                document.getElementById('btCancelarResponsavel').disabled=false
+                document.getElementById('btSALVARRESPONSAVEL').disabled=false
+                document.getElementById('btSALVARRESPONSAVEL').className = 'w-full py-4 rounded-2xl bg-gradient-to-r from-aliancaPurple to-[#4a1282] text-white font-bold text-sm shadow-lg shadow-aliancaPurple/10 active:opacity-95 active:scale-[0.98] transition-all'
+                loadDados()
+                enviarEmail(forms)
+        }
+    })
 
 
-        const nome = document.getElementById('nomeKIDS').value
-        const apelido = document.getElementById('apelidoKIDS').value
-        const nascimento = document.getElementById('data-nascimento').value
-        const foto = urlFinal
-        const restricao = document.querySelector('input[name="restricao"]:checked').value
-        const obs = document.getElementById('obs-restricao').value
-        const forms = {nome, apelido, nascimento, restricao, obs, foto, turma:"KIDS", family: MOCK_USERS_DB.familia }
 
-        try{
+        document.getElementById('form-cadastro-familia').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        if (enviando) return;
+        enviando = true;
+
+        try {
+
+            // 🔥 PEGANDO CAMPOS
+            const nome = document.getElementById('nomeKIDS').value.trim();
+            const apelido = document.getElementById('apelidoKIDS').value.trim();
+            const nascimento = document.getElementById('data-nascimento').value;
+
+            // 🔥 VALIDAÇÃO
+            if (!nome || !apelido || !nascimento) {
+                showToast('Preencha nome, apelido e data', false);
+                return;
+            }
+
+            document.getElementById('btSALVARKID').className ='w-full py-4 rounded-2xl bg-gray-500/40 text-white/40 font-bold text-sm cursor-not-allowed opacity-60 shadow-none';
+            document.getElementById('btCancelar').disabled = true;
+            document.getElementById('btSALVARKID').innerText = 'Salvando...';
+            let foto = '';
+            // 🔥 upload da imagem
+            if (fileSave) {
+
+                let formData = new FormData();
+                formData.append('imagem', fileSave);
+
+                const enviar = await fetch('/api/enviarImagem', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const url = await enviar.json();
+
+                foto = `${location.origin}/IMG_DE_PERFIL/${url.arquivo.filename}`;
+
+                console.log(foto);
+
+            } else {
+                showToast('Foto da criança obrigatória', false);
+                return;
+            }
+
+            const restricaoEl = document.querySelector('input[name="restricao"]:checked');
+
+            const restricao = restricaoEl ? restricaoEl.value : null;
+
+            const obs = document.getElementById('obs-restricao').value;
+
+            const forms = {
+                nome,
+                apelido,
+                nascimento,
+                restricao,
+                obs,
+                foto,
+                turma: "KIDS",
+                family: MOCK_USERS_DB.familia
+            };
+
             const response = await fetch('/api/adicionarKids', {
                 method: 'POST',
                 headers: {
@@ -469,19 +797,39 @@
                 },
                 body: JSON.stringify(forms)
             });
-            const respostas = await response.json()
-
-            if(respostas.success){
-                boxCadastro.classList.add('hidden')
-                loadDados()
-                return showToast(apelido + ' foi cadastrado')
+            const respostas = await response.json();
+            if (respostas.success) {
+                boxCadastro.classList.add('hidden');
+                loadDados();
+                fileSave=null
+                showToast(apelido + ' foi cadastrado');
             }
-
-        }catch (error) {
-            console.log(error);
+        } catch (error) {
+            console.error(error);
+            showToast('Erro ao cadastrar', false);
+        } finally {
+            document.getElementById('btCancelar').disabled = false;
+            document.getElementById('btSALVARKID').innerText = 'Salvar Kid';
+            document.getElementById('btSALVARKID').className =
+                'w-full py-4 rounded-2xl bg-gradient-to-r from-aliancaPurple to-[#4a1282] text-white font-bold text-sm shadow-lg shadow-aliancaPurple/10 active:opacity-95 active:scale-[0.98] transition-all';
+            enviando = false;
         }
+    });
 
-    })
+    async function enviarEmail(email) {
+        const enviar = await fetch('/api/enviarEmail',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({
+                dados: email,
+                familia:MOCK_USERS_DB.familia
+            })
+        }) 
+        const rep = await enviar.json()
+        if(rep.success){showToast('Email para '+email.nome+' foi enviado')}         
+    }
 
     async function handleLogin(event) {
         event.preventDefault();
@@ -511,8 +859,21 @@
             showToast("E-mail ou senha incorretos.", false);
         }
     }
-
-   
+    function abrirModalResponsavel(){
+        fileSave = null
+        document.getElementById('box-responsavel').classList.remove('hidden')
+        document.getElementById('preview-foto-responsavel').classList.add('hidden')
+        document.getElementById('input-foto-responsavel').value=''
+        document.getElementById('form-cadastro-responsavel').reset()
+    }
+    function abrirModalFamilia(){
+        document.getElementById('box').classList.remove('hidden');
+        document.getElementById('form-cadastro-familia').reset()
+        document.getElementById('preview-foto').src = ''
+        document.getElementById('preview-foto').classList.add('hidden')
+        document.getElementById('input-foto').value=''
+    }
+    
     function handleLogout() {
         localStorage.removeItem("isDadosLogin");
         checkAuth();
@@ -524,7 +885,7 @@
         document.querySelectorAll('#current-user-avatar').forEach(e=>{e.src=MOCK_USERS_DB.foto;}) 
     }
 
-   async function carregarPreview(event) {
+   async function carregarPreview(event,ind) {
     const file = event.target.files[0]
     if (!file) return
 
@@ -545,11 +906,177 @@
     }
     fileSave = arquivoFinal
     const urlteste = URL.createObjectURL(arquivoFinal)
-    document.getElementById('preview-foto').src = urlteste
-    document.getElementById('preview-foto').classList.remove('hidden')
-
+    if(ind==1){
+        document.getElementById('preview-foto').src = urlteste
+        document.getElementById('preview-foto').classList.remove('hidden')
+    }else if(ind==2){
+        document.getElementById('preview-foto-responsavel').classList.remove('hidden')
+        document.getElementById('preview-foto-responsavel').src= urlteste
     }
+}
 
+async function registrarEntrada(IDKID, professora, sala) {
+    try {
+        const kid = API_FAMILY_MEMBERS.find(peste => peste.id == IDKID);
+        
+        if (!kid) {
+            throw new Error('Kid não encontrado na lista');
+        }
+        if (sala == 'null' || !sala) {
+            showToast('Sem sala para essa idade', false);
+            return;
+        }
+        if (kid.status == 1) {
+            showToast('Aluno já em sala', false);
+            return;
+        }
+
+        const enviar = await fetch('/api/registrar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: IDKID,
+                nome: kid.nome,
+                sala: sala,
+                familia: kid.family,
+                prof: professora,
+                tipo: "Entrada"
+            })
+        });
+
+        if (!enviar.ok) {
+            throw new Error('Erro na requisição da API');
+        }
+
+        const resposta = await enviar.json();
+        loadDados();
+
+        // Configura e abre a tela de confirmação para ENTRADA
+        exibirConfirmacao({
+            tipo: "Entrada",
+            titulo: "Entrada Confirmada",
+            subtitulo: "Seu filho(a) entrou na sala com sucesso.",
+            alerta: "Entrada registrada com segurança",
+            icone: "check-circle-2",
+            classeIcone: "text-aliancaPurple",
+            corAlerta: "bg-purple-50/60",
+            textoAlerta: "text-aliancaPurple",
+            labelHorario: "Horário de Entrada",
+            labelProf: "Recepcionado por",
+            kidNome: kid.nome,
+            kidFoto: kid.foto,
+            sala: sala,
+            professora: professora,
+            dataHora: resposta.data
+        });
+
+    } catch (error) {
+        console.error('Erro ao registrar entrada:', error);
+        showToast('Erro ao registrar entrada. Tente novamente.', false);
+    }
+}
+
+async function registrarSaida(IDKID, professora, sala) {
+    try {
+        const kid = API_FAMILY_MEMBERS.find(peste => peste.id == IDKID);
+        
+        if (!kid) {
+            throw new Error('Kid não encontrado na lista');
+        }
+        // Na saída, o status geralmente deve ser 1 (Em sala) para poder sair. Ajuste conforme sua regra de negócio.
+        if (kid.status == 0) {
+            showToast('Aluno não está em sala', false);
+            return;
+        }
+
+        // Alterado para a rota/parâmetro correto de Saída se houver, ou mantido o padrão dinâmico
+        const enviar = await fetch('/api/registrar', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: IDKID,
+                nome: kid.nome,
+                sala: sala,
+                familia: kid.family,
+                prof: professora,
+                tipo: "Saída"
+            })
+        });
+
+        if (!enviar.ok) {
+            throw new Error('Erro na requisição da API');
+        }
+
+        const resposta = await enviar.json();
+        loadDados();
+
+        // Configura e abre a tela de confirmação para SAÍDA
+        exibirConfirmacao({
+            tipo: "Saída",
+            titulo: "Saída Confirmada",
+            subtitulo: "Retirada da criança registrada com sucesso.",
+            alerta: "Saída registrada com segurança",
+            icone: "log-out",
+            classeIcone: "text-amber-500",
+            corAlerta: "bg-amber-50/60",
+            textoAlerta: "text-amber-600",
+            labelHorario: "Horário de Saída",
+            labelProf: "Entregue por",
+            kidNome: kid.nome,
+            kidFoto: kid.foto,
+            sala: sala,
+            professora: professora,
+            dataHora: resposta.data
+        });
+
+    } catch (error) {
+        console.error('Erro ao registrar saída:', error);
+        showToast('Erro ao registrar saída. Tente novamente.', false);
+    }
+}
+
+// Função auxiliar para mudar os textos do painel de confirmação dinamicamente
+function exibirConfirmacao(config) {
+    document.getElementById('confirmation-screen').classList.remove('hidden');
+    
+    // Altera cabeçalhos
+    document.getElementById('ConfTitulo').innerText = config.titulo;
+    document.getElementById('ConfSubtitulo').innerText = config.subtitulo;
+    
+    // Altera os dados da criança
+    document.getElementById('NameKids').innerText = config.kidNome;
+    document.getElementById('SalaKids').innerText = config.sala;
+    document.getElementById('ImagemKids').src = config.kidFoto;
+    document.getElementById('DataKids').innerText = config.dataHora;
+    
+    // Altera Labels Dinâmicos da Tabela
+    document.getElementById('LabelHorario').innerText = config.labelHorario;
+    document.getElementById('LabelProf').innerText = config.labelProf;
+    
+    // Atualiza nome do professor/responsável pelo evento
+    document.getElementById('ProfKids').innerHTML = `
+        <i data-lucide="user-check" style="width: 14px; height: 14px;" class="text-slate-400"></i>
+        ${config.professora}
+    `;
+
+    // Modifica o Bloco de Alerta inferior do card
+    const alertaContainer = document.getElementById('ConfAlertaContainer');
+    alertaContainer.className = `w-full border border-slate-100 rounded-xl p-3 flex items-center justify-center gap-2 ${config.corAlerta}`;
+    
+    alertaContainer.innerHTML = `
+        <i data-lucide="shield-check" style="width: 16px; height: 16px;" class="${config.textoAlerta}"></i>
+        <p class="text-xs font-bold uppercase tracking-wide ${config.textoAlerta}">${config.alerta}</p>
+    `;
+
+    // Recarrega os ícones do Lucide instalados para renderizar o novo ícone caso mude
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+}
     async function enviarImagem(file) {
         const formData = new FormData();
         formData.append("imagem", file);
@@ -574,26 +1101,19 @@
     }
 
     function calcularIdade(dataNascimento) {
-
         const hoje = new Date()
-
         const nascimento = new Date(dataNascimento)
-
         let idade = hoje.getFullYear() - nascimento.getFullYear()
-
         const mesAtual = hoje.getMonth()
         const diaAtual = hoje.getDate()
-
         const mesNascimento = nascimento.getMonth()
         const diaNascimento = nascimento.getDate()
-
         if (
             mesAtual < mesNascimento ||
             (mesAtual === mesNascimento && diaAtual < diaNascimento)
         ) {
             idade--
         }
-
         return idade
     }
 
@@ -604,27 +1124,25 @@
         const countTagKids = document.getElementById('family-count-tag');
         const countTag = document.getElementById('management-family-count');
         let sala ="Nenéns"
-        
+        containerEDicao.innerHTML =''
         container.innerHTML = '';
         countTag.textContent = `${members.length} Integrantes`;
         countTagKids.textContent =  `${members.filter(e=>e.class=='KIDS').length} Crianças `
 
         members.forEach(member => {
             const isKid = member.class === 'KIDS';
-
             const badgeColor = isKid ? 'bg-pink-50 text-aliancaPink border-pink-100/50' : 'bg-purple-50 text-aliancaPurple border-purple-100/50';
             const badgeLabel = isKid ? 'Infantil (KID)' : 'Responsável (RESP)';
-            const statusDot = member.status === 'Na Escola' ? 'bg-aliancaGreen' : 'bg-slate-300';
+            const statusDot = member.status == 1 ? 'bg-aliancaGreen' : 'bg-slate-300';
+            let textoDebaixo = null
+            if (member.ultimaAtividade){textoDebaixo=member.status==1? 'Entrada:' :'Saida:'}
             const cardEDicao= document.createElement('div')
             if(isKid){
                 const idade = calcularIdade(member.dataNascimento) 
-                if(idade>=4 && idade<=6){
-                    sala= "Babys"
-                }else if (idade>=7 && idade<=11){
-                    sala='Kids'
-                }else if( idade>=12){
-                    sala='Teens '
-                }
+                let rp = obterSala(idade)
+                sala = rp.sala
+                let prof = rp.prof
+                
                 const card = document.createElement('div');
                 card.className = "member-card bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow-md transition-all";
                 card.innerHTML = `
@@ -639,21 +1157,21 @@
                             <p class="text-xs text-slate-400 font-medium">${idade} Anos</p>
                             
                             <p class="text-[11px] mt-0.5 text-slate-400 flex items-center gap-1">
-                                <i data-lucide="clock" style="width:12px;height:12px"></i> ${member.ultimaAtividade || 'Sem registro'}
+                                <i data-lucide="clock" style="width:12px;height:12px"></i> ${textoDebaixo || ''} ${member.ultimaAtividade || 'Sem registro'}
                             </p>
                         </div>
                     </div>
                     
-                    <span class="text-xs px-3 py-1 rounded-full font-bold ${badgeColor} border">${sala}</span>
+                    <span class="text-xs px-3 py-1 rounded-full font-bold ${badgeColor} border">${sala || 'Sem sala'}</span>
                 </div>
 
                 <div class="flex gap-2.5 mt-4">
-                    <button class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-aliancaPurple text-white hover:bg-opacity-95 shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-1">
+                    <button class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-aliancaPurple text-white hover:bg-opacity-95 shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-1" onclick = "registrarEntrada('${member.id}','${prof}','${sala}')">
                         <i data-lucide="log-in" style="width:14px;height:14px"></i>
                         Registrar Entrada
                     </button> 
 
-                    <button class="flex-1 py-2.5 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 hover:bg-slate-50 active:scale-[0.98] transition-all flex items-center justify-center gap-1">
+                    <button class="flex-1 py-2.5 rounded-xl text-xs font-bold border border-slate-200 text-slate-600 hover:bg-slate-50 active:scale-[0.98] transition-all flex items-center justify-center gap-1" onclick = "registrarSaida('${member.id}','${prof}','${sala}')">
                         <i data-lucide="log-out" style="width:14px;height:14px"></i>
                         Gerar Retirada
                     </button>
